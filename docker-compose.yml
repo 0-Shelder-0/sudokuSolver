@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+
+  #todo
+  webapi_1:
+    build: webapi/.
+
+  webapi_2:
+    build: webapi/.
+
+  solver:
+    build: solver/.
+
+  redis:
+    image: redis
+
+  rabbit:
+    image: rabbitmq:management
+
+  nginx:
+    build: nginx/.
