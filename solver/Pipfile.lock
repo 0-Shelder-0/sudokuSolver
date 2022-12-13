@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "976117492415a666461d5557f639a4e83896d347f5814b3d71727c35e90cd14e"
+            "sha256": "c19988421f8cc6c9e0de55811f93354e4c6ab039bae3063521b21bf31bc99dd7"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -24,6 +24,14 @@
             "markers": "python_full_version >= '3.6.2'",
             "version": "==3.6.2"
         },
+        "async-timeout": {
+            "hashes": [
+                "sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15",
+                "sha256:8ca1e4fcf50d07413d66d1a5e416e42cfdf5851c981d679a09851a6853383b3c"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==4.0.2"
+        },
         "click": {
             "hashes": [
                 "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e",
@@ -39,14 +47,6 @@
             ],
             "markers": "platform_system == 'Windows'",
             "version": "==0.4.6"
-        },
-        "fastapi": {
-            "hashes": [
-                "sha256:263b718bb384422fe3d042ffc9a0c8dece5e034ab6586ff034f6b4b1667c3eee",
-                "sha256:915bf304180a0e7c5605ec81097b7d4cd8826ff87a02bb198e336fb9f3b5ff02"
-            ],
-            "index": "pypi",
-            "version": "==0.88.0"
         },
         "h11": {
             "hashes": [
@@ -176,6 +176,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==1.10.2"
         },
+        "redis": {
+            "hashes": [
+                "sha256:7b8c87d19c45d3f1271b124858d2a5c13160c4e74d4835e28273400fa34d5228",
+                "sha256:cae3ee5d1f57d8caf534cd8764edf3163c77e073bdd74b6f54a87ffafdc5e7d9"
+            ],
+            "index": "pypi",
+            "version": "==4.4.0"
+        },
         "sniffio": {
             "hashes": [
                 "sha256:e60305c5e5d314f5389259b7f22aaa33d8f7dee49763119234af3755c55b9101",
@@ -199,14 +207,6 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==4.4.0"
-        },
-        "uvicorn": {
-            "hashes": [
-                "sha256:a4e12017b940247f836bc90b72e725d7dfd0c8ed1c51eb365f5ba30d9f5127d8",
-                "sha256:c3ed1598a5668208723f2bb49336f4509424ad198d6ab2615b7783db58d919fd"
-            ],
-            "index": "pypi",
-            "version": "==0.20.0"
         },
         "werkzeug": {
             "hashes": [
