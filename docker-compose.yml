@@ -2,15 +2,25 @@ version: "3.9"
 services:
   webapi_1:
     build: webapi/.
+    depends_on:
+      - db
+    links:
+      - db
     environment:
-      RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
       NAME: webapi_1
+      RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
+      DATABASE_URL: postgresql://postgres:root@db/sudoku
 
   webapi_2:
     build: webapi/.
+    depends_on:
+      - db
+    links:
+      - db
     environment:
-      RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
       NAME: webapi_2
+      RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
+      DATABASE_URL: postgresql://postgres:root@db/sudoku
 
   solver:
     build: solver/.
@@ -18,14 +28,12 @@ services:
     depends_on:
       - rabbit
       - nginx
-      - redis
     links:
       - rabbit
       - nginx
-      - redis
     environment:
       RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
-      CACHE_HOST: redis
+      WEB_API_BASE_URL: http://nginx:80
 
   rabbit:
     image: rabbitmq:management
@@ -55,5 +63,17 @@ services:
       - webapi_1
       - webapi_2
 
-  redis:
-    image: redis
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "15432:5432"
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
+      POSTGRES_DB: sudoku
+    volumes:
+      - "dbdata:/var/lib/postgresql/data"
+
+volumes:
+  dbdata:
