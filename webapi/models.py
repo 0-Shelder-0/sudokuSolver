@@ -11,15 +11,15 @@ class Solution(Base):
     __tablename__ = "solutions"
 
     id = Column(Integer, primary_key=True, index=True)
-    solution = Column(String)
+    solution = Column(String, nullable=False)
 
 
-class Status(Base):
-    __tablename__ = "statuses"
+class SolutionStatus(Base):
+    __tablename__ = "solution_statuses"
 
     id = Column(Integer, primary_key=True, index=True)
-    solution_id = Column(Integer, ForeignKey(Solution.id))
-    status = Column(Integer)
-    created_at = Column(DateTime, default=datetime.now)
+    solution_id = Column(Integer, ForeignKey(Solution.id), nullable=False)
+    status = Column(Integer, nullable=False)
+    created_at = Column(DateTime, default=datetime.now, nullable=False)
 
-    solution = relationship('solutions', foreign_keys='statuses.solution_id')
+    solution = relationship('solutions', foreign_keys='solution_statuses.solution_id')
