@@ -5,7 +5,7 @@ name = "pypi"
 
 [packages]
 pika = "*"
-redis = "*"
+requests = "*"
 
 [dev-packages]
 

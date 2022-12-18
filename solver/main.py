@@ -1,48 +1,26 @@
 import json
-import os
 import sys
-from typing import Optional
+from os import environ
 
 import pika
-import redis
+
+from solver.request_sender import send_request_to_create_status, send_request_to_update_solution
+from solver.sudoku_solver import get_solution
 
 QUEUE_NAME = 'solutions'
-
-cache = redis.Redis(host=os.environ['CACHE_HOST'], decode_responses=True)
-
-
-def get_from_cache(cache_key: str) -> Optional[int]:
-    value = cache.get(cache_key)
-    return value
-
-
-def set_cache(cache_key: str, status_code: int) -> None:
-    cache.set(cache_key, status_code, ex=100000000000)
-
-
-def get_solution(request: str) -> str:
-    cache_key = f"{request}"
-    solution = get_from_cache(cache_key)
-    if solution is None:
-        solution = solve()
-        set_cache(cache_key, solution)
-
-    return solution
-
-
-def solve():
-    # todo реализовать механизм решения
-    return None
 
 
 def handle_message(ch, method, properties, body):
     request_json = json.loads(body.decode('utf-8'))
-    solution = get_solution(request_json['sudoku'])
-    # todo оповестить о готовности решения
+    solution_id = int(request_json['id'])  # todo check
+
+    send_request_to_create_status(solution_id)
+    solution = get_solution(request_json['solution'])
+    send_request_to_update_solution(solution, solution_id)
 
 
 def main():
-    connection = pika.BlockingConnection(pika.URLParameters(os.environ['RABBITMQ_URL']))
+    connection = pika.BlockingConnection(pika.URLParameters(environ.get('RABBITMQ_URL')))
     channel = connection.channel()
     channel.queue_declare(queue=QUEUE_NAME)
     channel.basic_consume(queue=QUEUE_NAME, auto_ack=True, on_message_callback=handle_message)
