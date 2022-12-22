@@ -6,3 +6,12 @@ from sqlalchemy.orm import sessionmaker
 db_url = environ.get('DATABASE_URL')
 engine = create_engine(db_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

@@ -10,6 +10,7 @@ services:
       NAME: webapi_1
       RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
       DATABASE_URL: postgresql://postgres:root@db/sudoku
+      API_TOKEN: e&Itqej9-71H5z?4K&b8>v]v[}s]+[F^h2WcQn!;M3^YlDph&bdOnV(JE![XP2w
 
   webapi_2:
     build: webapi/.
@@ -21,6 +22,7 @@ services:
       NAME: webapi_2
       RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
       DATABASE_URL: postgresql://postgres:root@db/sudoku
+      API_TOKEN: e&Itqej9-71H5z?4K&b8>v]v[}s]+[F^h2WcQn!;M3^YlDph&bdOnV(JE![XP2w
 
   solver:
     build: solver/.
@@ -34,6 +36,7 @@ services:
     environment:
       RABBITMQ_URL: amqp://user:passwd@rabbit:5672/%2F
       WEB_API_BASE_URL: http://nginx:80
+      API_TOKEN: e&Itqej9-71H5z?4K&b8>v]v[}s]+[F^h2WcQn!;M3^YlDph&bdOnV(JE![XP2w
 
   rabbit:
     image: rabbitmq:management
