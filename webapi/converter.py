@@ -1,13 +1,16 @@
 from math import sqrt
 from typing import List
 
+MATRIX_EMPTY_VALUE = ''
+STRING_EMPTY_VALUE = '0'
+
 
 def convert_to_text(matrix: List[List[str]]) -> str:
     text = ''
     for line in matrix:
         for item in line:
-            if item is None or item == '':
-                text += '0'
+            if item is None or item == MATRIX_EMPTY_VALUE:
+                text += STRING_EMPTY_VALUE
             else:
                 text += item
 
@@ -24,6 +27,9 @@ def convert_to_matrix(text: str) -> List[List[str]] | None:
     for line in range(size):
         matrix.append([])
         for item in range(size):
-            matrix[line].append(text[line * size + item])
+            value = text[line * size + item]
+            if value == STRING_EMPTY_VALUE:
+                value = MATRIX_EMPTY_VALUE
+            matrix[line].append(value)
 
     return matrix
