@@ -4,7 +4,7 @@ import Table from "../Table";
 import * as SC from './styles';
 
 const Index = (props) => {
-    const {tableSize, onUpdateTableHandler, getCellValue} = props;
+    const {tableSize, onUpdateTableHandler, getCellValue, dataLoading} = props;
     const sudokuArray = new Array(tableSize * tableSize).fill('');
 
     console.log(sudokuArray);
@@ -15,6 +15,7 @@ const Index = (props) => {
                 tableSize={tableSize}
                 onUpdateTableHandler={onUpdateTableHandler}
                 getCellValue={getCellValue}
+                dataLoading={dataLoading}
             >
             </Table>
         </SC.SudokuWrapper>

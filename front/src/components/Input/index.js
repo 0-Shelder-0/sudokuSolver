@@ -5,7 +5,7 @@ import {checkCorrectDataEntry, checkEmptyString, checkWhitespace} from "../../he
 import * as SC from "./styles";
 
 const Index = (props) => {
-    const { rowIndex, columnIndex, onUpdateTableHandler, getCellValue } = props;
+    const { rowIndex, columnIndex, onUpdateTableHandler, getCellValue, dataLoading } = props;
 
     const [inputValue, setInputValue] = useState('');
     const [inputError, setInputError] = useState(false);
@@ -32,7 +32,7 @@ const Index = (props) => {
     return (
         <SC.Input
             maxLength={1}
-            value={inputValue}
+            value={dataLoading ? getCellValue(rowIndex, columnIndex) : inputValue}
             onChange={onChangeHandler}
             isError={inputError}
         />

@@ -5,11 +5,13 @@ import Button from "../../components/Button";
 
 import { checkError, getNineSizeArray } from "../../helpers/tableHelper";
 import {postData} from "../../services/fetchService";
+import SOLUTION_POST_URL from '../../constants/urls';
 import * as SC from './styles';
 
 const Index = () => {
     const [sudokuTable, setSudokuTable] = useState(getNineSizeArray());
     const [sudokuId, setSudokuId] = useState(null);
+    const [dataLoading, setDataLoading] = useState(false);
 
     const onUpdateTableHandler = (rowIndex, columnIndex, value) => {
         sudokuTable[rowIndex][columnIndex] = value;
@@ -40,6 +42,7 @@ const Index = () => {
                 tableSize={TABLE_SIZES.LARGE}
                 onUpdateTableHandler={onUpdateTableHandler}
                 getCellValue={getCellValue}
+                dataLoading={dataLoading}
             >
             </Sudoku>
             <SC.ButtonGroup>

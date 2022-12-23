@@ -4,7 +4,7 @@ import * as SC from './styles';
 import Input from "../Input";
 
 const Index = (props) => {
-    const { tableSize, onUpdateTableHandler, getCellValue } = props;
+    const { tableSize, onUpdateTableHandler, getCellValue, dataLoading } = props;
     const newTableSize = tableSize;
     const sudokuArray = new Array(newTableSize).fill('');
 
@@ -18,6 +18,7 @@ const Index = (props) => {
                             columnIndex={index}
                             onUpdateTableHandler={onUpdateTableHandler}
                             getCellValue={getCellValue}
+                            dataLoading={dataLoading}
                         />
                     ))}
                 </SC.Row>
