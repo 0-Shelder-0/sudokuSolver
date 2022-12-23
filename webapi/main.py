@@ -23,7 +23,6 @@ API_TOKEN = environ.get("API_TOKEN")
 
 @app.get("/")
 async def index():
-    # todo return page
     return {"message": "Hello World"}
 
 
