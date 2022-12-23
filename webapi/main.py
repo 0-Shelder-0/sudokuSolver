@@ -64,7 +64,7 @@ def create_solution(solution_create: SolutionCreate, db: Session = Depends(get_d
     db_solution = crud.get_solution_by_text(db, solution=solution_text)
     if db_solution is not None:
         db_status = crud.get_last_status(db, solution_id=db_solution.id)
-        if db_status is not None and Status.CREATED.value < db_status.status <= Status.SOLVED.value:
+        if db_status is not None and Status.CREATED.value <= db_status.status <= Status.SOLVED.value:
             response = SolutionIdResponse(solution_id=db_solution.id)
             return response
 
