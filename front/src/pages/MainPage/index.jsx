@@ -6,7 +6,7 @@ import Button from "../../components/Button";
 import {checkError, getNineSizeArray} from "../../helpers/tableHelper";
 import {getData, postData} from "../../services/fetchService";
 import * as SC from './styles';
-import {SOLUTION_POST_URL, STATUS_GET_URL} from "../../constants/urls";
+import {SOLUTION_GET_URL, SOLUTION_POST_URL, STATUS_GET_URL} from "../../constants/urls";
 
 const Index = () => {
     const [sudokuTable, setSudokuTable] = useState(getNineSizeArray());
@@ -37,7 +37,10 @@ const Index = () => {
             if (status === 4 || status === 5) {
                 clearInterval(statusInterval);
                 if (status === 4) {
-                    setDataLoading(true);
+                    getData(SOLUTION_GET_URL(sudokuId)).then((response) => {
+                        setSudokuTable(response);
+                        setDataLoading(true);
+                    });
                 }
             }
         }
