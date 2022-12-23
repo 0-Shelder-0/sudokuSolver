@@ -3,7 +3,7 @@ from os import environ
 
 import requests
 
-from solver.models.status import Status
+from models.status import Status
 
 API_TOKEN = environ.get("API_TOKEN")
 BASE_URL = environ.get("WEB_API_BASE_URL")

@@ -4,8 +4,8 @@ from os import environ
 
 import pika
 
-from solver.request_sender import send_request_to_create_status, send_request_to_update_solution
-from solver.sudoku_solver import get_solution
+from request_sender import send_request_to_create_status, send_request_to_update_solution
+from sudoku_solver import get_solution
 
 QUEUE_NAME = 'solutions'
 
