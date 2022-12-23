@@ -3,15 +3,16 @@ import Sudoku from "../../components/Sudoku";
 import {BUTTON_TYPES, TABLE_SIZES} from "../../constants/table";
 import Button from "../../components/Button";
 
-import { checkError, getNineSizeArray } from "../../helpers/tableHelper";
-import {postData} from "../../services/fetchService";
+import {checkError, getNineSizeArray} from "../../helpers/tableHelper";
+import {getData, postData} from "../../services/fetchService";
 import * as SC from './styles';
-import {SOLUTION_POST_URL} from "../../constants/urls";
+import {SOLUTION_POST_URL, STATUS_GET_URL} from "../../constants/urls";
 
 const Index = () => {
     const [sudokuTable, setSudokuTable] = useState(getNineSizeArray());
     const [sudokuId, setSudokuId] = useState(null);
     const [dataLoading, setDataLoading] = useState(false);
+    const [status, setStatus] = useState(0);
 
     const onUpdateTableHandler = (rowIndex, columnIndex, value) => {
         sudokuTable[rowIndex][columnIndex] = value;
@@ -25,9 +26,20 @@ const Index = () => {
     const onSubmitHandler = () => {
         const isError = checkError(sudokuTable);
         if (!isError) {
-            const body = { solution: sudokuTable };
+            const body = {solution: sudokuTable};
             const solId = postData(SOLUTION_POST_URL, body);
             setSudokuId(solId);
+
+            const statusInterval =
+                setInterval(() => {
+                    getData(STATUS_GET_URL(sudokuId)).then((response) => setStatus(response));
+                }, 2000);
+            if (status === 4 || status === 5) {
+                clearInterval(statusInterval);
+                if (status === 4) {
+                    setDataLoading(true);
+                }
+            }
         }
     };
 
