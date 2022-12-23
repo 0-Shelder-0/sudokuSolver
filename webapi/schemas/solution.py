@@ -1,15 +1,17 @@
+from typing import List
+
 from pydantic import BaseModel
 
 
-class Solution(BaseModel):
-    solution: [[]]
+class SolutionModel(BaseModel):
+    solution: List[List[str]]
 
 
-class SolutionCreate(Solution):
+class SolutionCreate(SolutionModel):
     pass
 
 
-class SolutionUpdate(Solution):
+class SolutionUpdate(SolutionModel):
     id: int
 
 
@@ -17,5 +19,5 @@ class SolutionIdResponse(BaseModel):
     solution_id: int
 
 
-class SolutionResponse(Solution):
+class SolutionResponse(SolutionModel):
     solution_id: int

@@ -3,13 +3,14 @@ from os import environ
 from fastapi import FastAPI, Request, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from webapi import models, crud
-from webapi.converter import convert_to_text, convert_to_matrix
-from webapi.custom_queue import send_message_to_queue
-from webapi.database import engine, get_db
-from webapi.schemas.solution import SolutionCreate, SolutionUpdate, SolutionIdResponse, SolutionResponse
-from webapi.schemas.solution_status import SolutionStatusInDb, SolutionStatusCreate
-from webapi.schemas.status import Status
+import crud
+import models
+from converter import convert_to_text, convert_to_matrix
+from custom_queue import send_message_to_queue
+from database import engine, get_db
+from schemas.solution import SolutionCreate, SolutionUpdate, SolutionIdResponse, SolutionResponse
+from schemas.solution_status import SolutionStatusInDb, SolutionStatusCreate
+from schemas.status import Status
 
 app = FastAPI()
 
@@ -26,7 +27,7 @@ async def index():
 
 
 @app.get("/status/{solution_id}", response_model=SolutionStatusInDb)
-def get_last_status(solution_id: int, db: Session = Depends(get_db)):
+def get_current_status(solution_id: int, db: Session = Depends(get_db)):
     last_status = crud.get_last_status(db, solution_id=solution_id)
     if last_status is None:
         raise HTTPException(status_code=404, detail="Solution not found")
@@ -40,7 +41,7 @@ def create_status(solution_status: SolutionStatusCreate, request: Request, db: S
     if api_token != API_TOKEN:
         raise HTTPException(status_code=403)
 
-    db_status = crud.create_status(db, solution_status=solution_status)
+    db_status = crud.create_solution_status(db, solution_status=solution_status)
     return db_status
 
 
@@ -66,7 +67,7 @@ def create_solution(solution_create: SolutionCreate, db: Session = Depends(get_d
 
     db_solution = crud.create_solution(db, solution_text=solution_text)
     create_model = SolutionStatusCreate(solution_id=db_solution.id, status=Status.CREATED.value)
-    status = crud.create_status(db, solution_status=create_model)
+    status = crud.create_solution_status(db, solution_status=create_model)
     send_message_to_queue(solution_id=db_solution.id, solution=solution_create.solution)
 
     response = SolutionIdResponse(solution_id=db_solution.id)
