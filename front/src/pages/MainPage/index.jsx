@@ -21,6 +21,7 @@ const Index = () => {
 
     const onResetTableHandler = () => {
         setSudokuTable(getNineSizeArray());
+        window.location.reload();
     };
 
     const onSubmitHandler = () => {
