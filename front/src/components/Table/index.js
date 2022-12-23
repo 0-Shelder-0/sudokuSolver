@@ -4,16 +4,21 @@ import * as SC from './styles';
 import Input from "../Input";
 
 const Index = (props) => {
-    const {tableSize} = props;
+    const { tableSize, onUpdateTableHandler, getCellValue } = props;
     const newTableSize = tableSize;
     const sudokuArray = new Array(newTableSize).fill('');
 
     return (
         <SC.Wrapper>
-            {sudokuArray.map((table) => (
+            {sudokuArray.map((table, rowIndex) => (
                 <SC.Row>
-                    {sudokuArray.map((table) => (
-                        <Input />
+                    {sudokuArray.map((table, index) => (
+                        <Input
+                            rowIndex={rowIndex}
+                            columnIndex={index}
+                            onUpdateTableHandler={onUpdateTableHandler}
+                            getCellValue={getCellValue}
+                        />
                     ))}
                 </SC.Row>
             ))}

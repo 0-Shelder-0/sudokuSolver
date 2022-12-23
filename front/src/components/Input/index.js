@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
 
-import { checkCorrectDataEntry } from "../../helpers/tableHelper";
+import {checkCorrectDataEntry, checkEmptyString, checkWhitespace} from "../../helpers/tableHelper";
 
 import * as SC from "./styles";
 
-const Index = () => {
+const Index = (props) => {
+    const { rowIndex, columnIndex, onUpdateTableHandler, getCellValue } = props;
+
     const [inputValue, setInputValue] = useState('');
     const [inputError, setInputError] = useState(false);
 
+
     const onChangeHandler = (e) => {
         const isDataCorrectly = !checkCorrectDataEntry(e.target.value);
-        if (!isDataCorrectly) {
+        const isWhitespace = checkWhitespace(e.target.value);
+        if (!isDataCorrectly && !isWhitespace) {
             setInputError(true);
-        } else {
+            onUpdateTableHandler(rowIndex, columnIndex, e.target.value.trim())
+            setInputValue(e.target.value.trim());
+        } else if (!isWhitespace) {
             setInputError(false);
+            onUpdateTableHandler(rowIndex, columnIndex, Number(e.target.value.trim()))
+            setInputValue(e.target.value.trim());
+        } else if (checkEmptyString(e.target.value)) {
+            setInputError(false);
+            onUpdateTableHandler(rowIndex, columnIndex, 0)
+            setInputValue(e.target.value);
         }
-        setInputValue(e.target.value.trim());
     };
 
     return (

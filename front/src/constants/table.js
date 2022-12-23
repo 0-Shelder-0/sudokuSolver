@@ -1,6 +1,6 @@
 export const TABLE_SIZES = Object.freeze({
-    SMALL: 2,
-    LARGE: 3,
+    SMALL: 4,
+    LARGE: 9,
 });
 
 export const BUTTON_TYPES = Object.freeze({
