@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 export const Input = styled.input`
   text-align: center;
@@ -6,7 +6,12 @@ export const Input = styled.input`
   
   margin: 0;
   padding: 0;
-  border: ${({ isError }) => isError ? '0.5px dashed red' : '0.5px dashed lightgray'};
+  border: 0.5px dashed lightgray;
+  border-right-color: ${({ columnIndex }) => columnIndex === 2 || columnIndex === 5 ? 'black' : 'lightgray'};
+  border-bottom-color: ${({ rowIndex }) => rowIndex === 2 || rowIndex === 5 ? 'black' : 'lightgray'};
   outline: none;
-  border-collapse: collapse;
+  
+  ${({ isError }) => isError && css`
+    border: 0.5px dashed red;
+  `}
 `;

@@ -35,6 +35,8 @@ const Index = (props) => {
             value={dataLoading ? getCellValue(rowIndex, columnIndex) : inputValue}
             onChange={onChangeHandler}
             isError={inputError}
+            rowIndex={rowIndex}
+            columnIndex={columnIndex}
         />
     );
 };
