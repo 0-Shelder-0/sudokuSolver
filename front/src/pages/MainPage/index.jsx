@@ -5,8 +5,8 @@ import Button from "../../components/Button";
 
 import { checkError, getNineSizeArray } from "../../helpers/tableHelper";
 import {postData} from "../../services/fetchService";
-import SOLUTION_POST_URL from '../../constants/urls';
 import * as SC from './styles';
+import {SOLUTION_POST_URL} from "../../constants/urls";
 
 const Index = () => {
     const [sudokuTable, setSudokuTable] = useState(getNineSizeArray());
