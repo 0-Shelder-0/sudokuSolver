@@ -7,7 +7,7 @@ import pika
 QUEUE_NAME = 'solutions'
 
 
-def send_message_to_queue(solution_id: int, solution: List[List[str]]):
+def send_message_to_queue(solution_id: int, solution: List[List[int]]):
     connection = pika.BlockingConnection(pika.URLParameters(environ.get('RABBITMQ_URL')))
     channel = connection.channel()
     channel.queue_declare(queue=QUEUE_NAME)

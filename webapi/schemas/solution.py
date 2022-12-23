@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class SolutionModel(BaseModel):
-    solution: List[List[str]]
+    solution: List[List[int]]
 
 
 class SolutionCreate(SolutionModel):

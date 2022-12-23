@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 import crud
 import models
-from converter import convert_to_text, convert_to_matrix, STRING_EMPTY_VALUE
+from converter import convert_to_text, convert_to_matrix, EMPTY_VALUE
 from custom_queue import send_message_to_queue
 from database import engine, get_db
 from schemas.solution import SolutionCreate, SolutionUpdate, SolutionIdResponse, SolutionResponse
@@ -90,7 +90,7 @@ def update_solution(solution_id: int, solution_update: SolutionUpdate, request: 
     solution_text = convert_to_text(solution_update.solution)
     crud.update_solution(db, solution_id=solution_id, solution_text=solution_text)
 
-    if solution_text.__contains__(STRING_EMPTY_VALUE):
+    if solution_text.__contains__(str(EMPTY_VALUE)):
         status = Status.ERROR.value
     else:
         status = Status.SOLVED.value
