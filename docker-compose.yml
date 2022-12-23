@@ -41,7 +41,13 @@ services:
   front:
     build: front/.
     ports:
-      - "3000:3001"
+      - "3000:3000"
+    depends_on:
+      - webapi_1
+      - webapi_2
+    links:
+      - webapi_1
+      - webapi_2
 
   rabbit:
     image: rabbitmq:management

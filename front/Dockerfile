@@ -1,6 +1,6 @@
-FROM node:12-alpine as builder
-WORKDIR /app
-COPY package.json /app/package.json
-RUN npm install --only=prod
-COPY . /app
-RUN npm run build
+FROM node:alpine
+WORKDIR /usr/app/front
+EXPOSE 3000
+COPY ./ ./
+RUN npm install
+CMD ["npm", "start"]
