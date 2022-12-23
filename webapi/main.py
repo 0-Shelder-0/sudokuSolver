@@ -1,3 +1,4 @@
+from datetime import datetime
 from os import environ
 
 from fastapi import FastAPI, Request, Depends, HTTPException
@@ -37,7 +38,7 @@ def get_current_status(solution_id: int, db: Session = Depends(get_db)):
 
 @app.post("/status/", response_model=SolutionStatusInDb)
 def create_status(solution_status: SolutionStatusCreate, request: Request, db: Session = Depends(get_db)):
-    api_token = request.headers.get('api-token')
+    api_token = request.headers.get('Api-token')
     if api_token != API_TOKEN:
         raise HTTPException(status_code=403)
 
@@ -62,28 +63,34 @@ def create_solution(solution_create: SolutionCreate, db: Session = Depends(get_d
 
     db_solution = crud.get_solution_by_text(db, solution=solution_text)
     if db_solution is not None:
-        response = SolutionIdResponse(solution_id=db_solution.id)
-        return response
+        db_status = crud.get_last_status(db, solution_id=db_solution.id)
+        if db_status is not None and Status.CREATED.value < db_status.status <= Status.SOLVED.value:
+            response = SolutionIdResponse(solution_id=db_solution.id)
+            return response
 
-    db_solution = crud.create_solution(db, solution_text=solution_text)
-    create_model = SolutionStatusCreate(solution_id=db_solution.id, status=Status.CREATED.value)
+    if db_solution is None:
+        db_solution = crud.create_solution(db, solution_text=solution_text)
+
+    create_model = SolutionStatusCreate(solution_id=db_solution.id,
+                                        status=Status.CREATED.value,
+                                        created_at=datetime.now())
     status = crud.create_solution_status(db, solution_status=create_model)
-    send_message_to_queue(solution_id=db_solution.id, solution=solution_create.solution)
 
+    send_message_to_queue(solution_id=db_solution.id, solution=solution_create.solution)
     response = SolutionIdResponse(solution_id=db_solution.id)
     return response
 
 
 @app.put("/solutions/{solution_id}", response_model=SolutionIdResponse)
 def update_solution(solution_id: int, solution_update: SolutionUpdate, request: Request, db: Session = Depends(get_db)):
-    api_token = request.headers.get('api-token')
+    api_token = request.headers.get('Api-token')
     if api_token != API_TOKEN:
         raise HTTPException(status_code=403)
 
     solution_text = convert_to_text(solution_update.solution)
     solution_update = crud.update_solution(db, solution_id=solution_id, solution_text=solution_text)
 
-    response = SolutionIdResponse(solution_id=solution_update.id)
+    response = SolutionIdResponse(solution_id=solution_id)
     return response
 
 

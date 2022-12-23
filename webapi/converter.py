@@ -1,7 +1,8 @@
 from math import sqrt
+from typing import List
 
 
-def convert_to_text(matrix: [[]]) -> str:
+def convert_to_text(matrix: List[List[str]]) -> str:
     text = ''
     for line in matrix:
         for item in line:
@@ -13,7 +14,7 @@ def convert_to_text(matrix: [[]]) -> str:
     return text
 
 
-def convert_to_matrix(text: str) -> [[]]:
+def convert_to_matrix(text: str) -> List[List[str]] | None:
     float_size = sqrt(len(text))
     if float_size != int(float_size):
         return None

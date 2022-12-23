@@ -12,11 +12,17 @@ QUEUE_NAME = 'solutions'
 
 def handle_message(ch, method, properties, body):
     request_json = json.loads(body.decode('utf-8'))
-    solution_id = int(request_json['id'])  # todo check
+    solution_id = int(request_json['id'])
 
-    send_request_to_create_status(solution_id)
-    solution = get_solution(request_json['solution'])
-    send_request_to_update_solution(solution, solution_id)
+    try:
+        send_request_to_create_status(solution_id)
+        solution = get_solution(request_json['solution'])
+        send_request_to_update_solution(solution, solution_id)
+    except:
+        print(f'Error with solution: {solution_id}')
+        # response = send_request_to_create_error_status(solution_id)
+        # if not response.ok:
+        #     print(response)
 
 
 def main():

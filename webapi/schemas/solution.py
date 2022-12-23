@@ -12,7 +12,7 @@ class SolutionCreate(SolutionModel):
 
 
 class SolutionUpdate(SolutionModel):
-    id: int
+    pass
 
 
 class SolutionIdResponse(BaseModel):
