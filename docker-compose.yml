@@ -38,6 +38,11 @@ services:
       WEB_API_BASE_URL: http://nginx:80
       API_TOKEN: e&Itqej9-71H5z?4K&b8>v]v[}s]+[F^h2WcQn!;M3^YlDph&bdOnV(JE![XP2w
 
+  front:
+    build: front/.
+    ports:
+      - "3000:3001"
+
   rabbit:
     image: rabbitmq:management
     hostname: rabbit
