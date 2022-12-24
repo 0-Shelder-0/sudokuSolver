@@ -76,7 +76,7 @@ def get_solution(solution_id: int, db: Session = Depends(get_db)):
 @app.post("/solutions/", response_model=SolutionIdResponse)
 def create_solution(solution_create: SolutionCreate, db: Session = Depends(get_db)):
     solution_text = convert_to_text(solution_create.solution)
-    db_text = solution_text.replace('0', '%')
+    db_text = solution_text.replace('0', '_')
 
     db_solution = crud.get_solution_by_text(db, solution=db_text)
     if db_solution is not None:
