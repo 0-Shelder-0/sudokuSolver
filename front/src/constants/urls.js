@@ -1,4 +1,4 @@
-const HOST = 'https://localhost:80';
+const HOST = 'https://localhost:8080';
 
 export const SOLUTION_POST_URL = `${HOST}/solutions/`;
 
