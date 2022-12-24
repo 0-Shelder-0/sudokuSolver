@@ -3,7 +3,7 @@ import Sudoku from "../../components/Sudoku";
 import {BUTTON_TYPES, TABLE_SIZES} from "../../constants/table";
 import Button from "../../components/Button";
 
-import {checkError, getNineSizeArray} from "../../helpers/tableHelper";
+import {checkError, getNineSizeArray, sleep} from "../../helpers/tableHelper";
 import {getData, postData} from "../../services/fetchService";
 import * as SC from './styles';
 import {SOLUTION_GET_URL, SOLUTION_POST_URL, STATUS_GET_URL} from "../../constants/urls";
@@ -32,20 +32,16 @@ const Index = () => {
             console.log(response, 'response');
             sudokuId = response.solution_id
 
-            const statusInterval =
-                setInterval(() => {
-                    getData(STATUS_GET_URL(sudokuId)).then((response) => status = response.status);
-                }, 1000);
-
-            if (status === 4 || status === 5) {
-                clearInterval(statusInterval);
-                if (status === 4) {
-                    getData(SOLUTION_GET_URL(sudokuId)).then((response) => {
-                        setSudokuTable(response);
-                        setDataLoading(true);
-                    });
-                }
+            while (status !== 4 && status !== 5) {
+                const statusResponse = await getData(STATUS_GET_URL(sudokuId));
+                status = statusResponse.status;
+                if (status === 4 || status === 5) break;
+                await sleep(1000);
             }
+
+            const solutionResponse = await getData(SOLUTION_GET_URL(sudokuId));
+            setSudokuTable(solutionResponse.solution);
+            setDataLoading(true);
         }
     };
 
