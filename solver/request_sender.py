@@ -22,7 +22,7 @@ def send_request_to(solution_id: int, status: int):
     request_model = {
         "solution_id": solution_id,
         "status": status,
-        "created_at": datetime.now().isoformat()
+        "created_at": datetime.utcnow().isoformat()
     }
     return send_request('post', f'{BASE_URL}/status/', request_model)
 

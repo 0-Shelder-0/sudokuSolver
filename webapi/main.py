@@ -2,6 +2,7 @@ from datetime import datetime
 from os import environ
 
 from fastapi import FastAPI, Request, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 import crud
@@ -14,6 +15,22 @@ from schemas.solution_status import SolutionStatusInDb, SolutionStatusCreate
 from schemas.status import Status
 
 app = FastAPI()
+
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    "http://localhost:8080",
+    "http://localhost:3000",
+    "http://localhost:5432",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -59,11 +76,20 @@ def get_solution(solution_id: int, db: Session = Depends(get_db)):
 @app.post("/solutions/", response_model=SolutionIdResponse)
 def create_solution(solution_create: SolutionCreate, db: Session = Depends(get_db)):
     solution_text = convert_to_text(solution_create.solution)
+    db_text = solution_text.replace('0', '%')
 
-    db_solution = crud.get_solution_by_text(db, solution=solution_text)
+    db_solution = crud.get_solution_by_text(db, solution=db_text)
     if db_solution is not None:
+        print('solution: ', db_solution.id)
         db_status = crud.get_last_status(db, solution_id=db_solution.id)
-        if db_status is not None and Status.CREATED.value <= db_status.status <= Status.SOLVED.value:
+        if db_status is not None:
+            print('status: ', db_status.id)
+            print('status: ', db_status.status)
+            print('status: ', db_status.created_at)
+
+        if db_status is not None and (
+                db_status.status == Status.SOLVED.value or Status.CREATED.value <= db_status.status <= Status.WAITING.value and (
+                datetime.utcnow() - db_status.created_at).seconds < 60):
             response = SolutionIdResponse(solution_id=db_solution.id)
             return response
 
@@ -72,7 +98,7 @@ def create_solution(solution_create: SolutionCreate, db: Session = Depends(get_d
 
     create_model = SolutionStatusCreate(solution_id=db_solution.id,
                                         status=Status.CREATED.value,
-                                        created_at=datetime.now())
+                                        created_at=datetime.utcnow())
     crud.create_solution_status(db, solution_status=create_model)
 
     send_message_to_queue(solution_id=db_solution.id, solution=solution_create.solution)
@@ -96,7 +122,7 @@ def update_solution(solution_id: int, solution_update: SolutionUpdate, request: 
 
     create_model = SolutionStatusCreate(solution_id=solution_id,
                                         status=status,
-                                        created_at=datetime.now())
+                                        created_at=datetime.utcnow())
     crud.create_solution_status(db, solution_status=create_model)
 
     response = SolutionIdResponse(solution_id=solution_id)

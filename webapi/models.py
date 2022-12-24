@@ -21,6 +21,6 @@ class SolutionStatus(Base):
     id = Column(Integer, primary_key=True, index=True)
     solution_id = Column(Integer, ForeignKey(Solution.id), nullable=False)
     status = Column(Integer, nullable=False)
-    created_at = Column(DateTime, default=datetime.now, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     solution = relationship("Solution", back_populates="statuses")

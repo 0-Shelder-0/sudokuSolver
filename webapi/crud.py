@@ -27,9 +27,8 @@ def get_solution_by_id(db: Session, solution_id: int) -> Optional[models.Solutio
     return db.query(models.Solution).filter(models.Solution.id == solution_id).first()
 
 
-# todo change equals on like
 def get_solution_by_text(db: Session, solution: str) -> Optional[models.Solution]:
-    return db.query(models.Solution).filter(models.Solution.solution == solution).first()
+    return db.query(models.Solution).filter(models.Solution.solution.like(solution)).first()
 
 
 def create_solution(db: Session, solution_text: str) -> models.Solution:
