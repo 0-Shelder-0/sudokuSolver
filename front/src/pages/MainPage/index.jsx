@@ -24,11 +24,11 @@ const Index = () => {
         window.location.reload();
     };
 
-    const onSubmitHandler = () => {
+    const onSubmitHandler = async () => {
         const isError = checkError(sudokuTable);
         if (!isError) {
             const body = {solution: sudokuTable};
-            const response = postData(SOLUTION_POST_URL, body);
+            const response = await postData(SOLUTION_POST_URL, body);
             console.log(response, 'response');
             setSudokuId(response['solution_id']);
 
