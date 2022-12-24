@@ -10,7 +10,7 @@ import {SOLUTION_GET_URL, SOLUTION_POST_URL, STATUS_GET_URL} from "../../constan
 
 const Index = () => {
     const [sudokuTable, setSudokuTable] = useState(getNineSizeArray());
-    const [sudokuId, setSudokuId] = useState(null);
+    let sudokuId = 0;
     const [dataLoading, setDataLoading] = useState(false);
     const [status, setStatus] = useState(0);
 
@@ -30,7 +30,7 @@ const Index = () => {
             const body = {solution: sudokuTable};
             const response = await postData(SOLUTION_POST_URL, body);
             console.log(response, 'response');
-            setSudokuId(response['solution_id']);
+            sudokuId = response.solution_id
 
             const statusInterval =
                 setInterval(() => {
