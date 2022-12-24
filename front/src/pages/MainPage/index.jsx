@@ -12,7 +12,7 @@ const Index = () => {
     const [sudokuTable, setSudokuTable] = useState(getNineSizeArray());
     let sudokuId = 0;
     const [dataLoading, setDataLoading] = useState(false);
-    const [status, setStatus] = useState(0);
+    let status = 0;
 
     const onUpdateTableHandler = (rowIndex, columnIndex, value) => {
         sudokuTable[rowIndex][columnIndex] = value;
@@ -34,8 +34,9 @@ const Index = () => {
 
             const statusInterval =
                 setInterval(() => {
-                    getData(STATUS_GET_URL(sudokuId)).then((response) => setStatus(response));
-                }, 2000);
+                    getData(STATUS_GET_URL(sudokuId)).then((response) => status = response.status);
+                }, 1000);
+
             if (status === 4 || status === 5) {
                 clearInterval(statusInterval);
                 if (status === 4) {
