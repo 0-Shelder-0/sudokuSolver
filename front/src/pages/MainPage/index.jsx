@@ -30,7 +30,7 @@ const Index = () => {
             const body = {solution: sudokuTable};
             const response = postData(SOLUTION_POST_URL, body);
             console.log(response, 'response');
-            setSudokuId(response.solution_id);
+            setSudokuId(response['solution_id']);
 
             const statusInterval =
                 setInterval(() => {
