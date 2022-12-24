@@ -28,8 +28,7 @@ const Index = () => {
         const isError = checkError(sudokuTable);
         if (!isError) {
             const body = {solution: sudokuTable};
-            const solId = postData(SOLUTION_POST_URL, body);
-            setSudokuId(solId);
+            postData(SOLUTION_POST_URL, body).then((response) => setSudokuId(response.solution_id));
 
             const statusInterval =
                 setInterval(() => {
